@@ -107,7 +107,7 @@ test_db=# \l
 -----------+--------+----------+------------+------------+-----------------------------
  postgres  | gorbachev | UTF8     | en_US.utf8 | en_US.utf8 | 
  template0 | gorbachev | UTF8     | en_US.utf8 | en_US.utf8 | =c/gorbachev                   +
-           |           |          |            |            | baldin=CTc/gorbachev
+           |           |          |            |            | gorbachev=CTc/gorbachev
  template1 | gorbachev | UTF8     | en_US.utf8 | en_US.utf8 | =c/gorbachev                   +
            |           |          |            |            | gorbachev=CTc/gorbachev
  test_db   | gorbachev | UTF8     | en_US.utf8 | en_US.utf8 | =Tc/gorbachev                  +
