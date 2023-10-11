@@ -338,7 +338,7 @@ test_db=# EXPLAIN SELECT* FROM clients WHERE заказ IS NOT NULL;
 ## Решение:
 Создаю бэкап
 ```bash
-pg_dumpall -U baldin > /home/backup/test_db.backup
+pg_dumpall -U gorbachev > /home/backup/test_db.backup
 ```
 Останавливаю контейнер (проверяю, что нет запущенных контейнеров)
 ```bash
@@ -349,7 +349,7 @@ CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS   
 ```
 Поднимаю новый контейнер с чистой БД
 ```bash
-[admin@hw-06-02-docker ~]$ docker run --rm -d -e POSTGRES_USER=baldin -e POSTGRES_PASSWORD=qwerty -e POSTGRES_DB=test_db --name postgres2 postgres:12
+[admin@hw-06-02-docker ~]$ docker run --rm -d -e POSTGRES_USER=gorbachev -e POSTGRES_PASSWORD=qwerty -e POSTGRES_DB=test_db --name postgres2 postgres:12
 ```
 Копирую дамп в новый контейнер
 ```bash
@@ -359,7 +359,7 @@ Successfully copied 8.7kB to postgres2:/home/
 ```
 Восстанавливаю БД из файла
 ```bash
-root@690fb9fc0534:/# psql -U baldin -d test_db -f /home/test_db.backup
+root@690fb9fc0534:/# psql -U gorbachev -d test_db -f /home/test_db.backup
 SET
 SET
 SET
