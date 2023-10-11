@@ -1,17 +1,18 @@
 # Домашнее задание к занятию 2. «SQL» - `Горбачёв Олег`
 
-## ВведениеПеред выполнением задания вы можете ознакомиться с [дополнительными материалами](https://github.com/netology-code/virt-homeworks/blob/virt-11/additional/README.md)
+## Введение
+Перед выполнением задания вы можете ознакомиться с [дополнительными материалами](https://github.com/netology-code/virt-homeworks/blob/virt-11/additional/README.md)
 
 ## Задача 1
 
-Используя Docker, поднимите инстанс PostgreSQL (версию 12) c 2 volume, 
+Используя `Docker`, поднимите инстанс `PostgreSQL` (версию 12) c 2 volume, 
 в который будут складываться данные БД и бэкапы.
 
 Приведите получившуюся команду или docker-compose-манифест.
 
 ## Решение:
 
-*Содержимое docker-compose.yaml*
+Содержимое `docker-compose.yaml`
 ```yaml
 version: '3'
 
@@ -35,7 +36,7 @@ volumes:
   data:
   backup:
 ```
-*Запускаю:*
+Запускаю:
 ```bash
 [admin@hw-06-02-docker ~]$ docker-compose up -d
 Creating network "admin_default" with the default driver
@@ -60,12 +61,12 @@ Digest: sha256:7db33237a29afa0a62998b7b6707bfe99766e9da02b5780f8db8f773b85c8f33
 Status: Downloaded newer image for postgres:12
 Creating postgres ... done
 ```
-*Иду в контейнер:*
+Иду в контейнер:
 ```bash
 [admin@hw-06-02-docker ~]$ sudo docker exec -it postgres bash
 root@f5b11e40a0c6:/# 
 ```
-*Подключаюсь к базе:*
+Подключаюсь к базе:
 ```bash
 gorbachev@42a9c452187f:/$ psql test_db -U gorbachev
 psql (12.15 (Debian 12.15-1.pgdg110+1))
@@ -80,19 +81,19 @@ test_db=#
 
 В БД из задачи 1: 
 
-- создайте пользователя test-admin-user и БД test_db;
-- в БД test_db создайте таблицу orders и clients (спeцификация таблиц ниже);
-- предоставьте привилегии на все операции пользователю test-admin-user на таблицы БД test_db;
-- создайте пользователя test-simple-user;
-- предоставьте пользователю test-simple-user права на SELECT/INSERT/UPDATE/DELETE этих таблиц БД test_db.
+- создайте пользователя `test-admin-user` и БД `test_db`;
+- в БД `test_db` создайте таблицу `orders` и `clients` (спeцификация таблиц ниже);
+- предоставьте привилегии на все операции пользователю `test-admin-user` на таблицы БД `test_db`;
+- создайте пользователя `test-simple-user`;
+- предоставьте пользователю `test-simple-user` права на `SELECT/INSERT/UPDATE/DELETE` этих таблиц БД `test_db`.
 
-Таблица orders:
+Таблица `orders`:
 
 - id (serial primary key);
 - наименование (string);
 - цена (integer).
 
-Таблица clients:
+Таблица `clients`:
 
 - id (serial primary key);
 - фамилия (string);
@@ -145,8 +146,8 @@ Indexes:
 Referenced by:
     TABLE "clients" CONSTRAINT "clients_заказ_fkey" FOREIGN KEY ("заказ") REFERENCES orders(id)
 ```
-- SQL-запрос для выдачи списка пользователей с правами над таблицами test_db;
-- список пользователей с правами над таблицами test_db.
+- SQL-запрос для выдачи списка пользователей с правами над таблицами `test_db`;
+- список пользователей с правами над таблицами `test_db`.
 ```bash
 test_db=# SELECT grantee, table_name, privilege_type FROM information_schema.table_privileges WHERE table_name IN ('orders','clients');
      grantee      | table_name | privilege_type 
@@ -265,9 +266,9 @@ test_db=# SELECT * FROM clients;
 ---
 ## Задача 4
 
-Часть пользователей из таблицы clients решили оформить заказы из таблицы orders.
+Часть пользователей из таблицы `clients` решили оформить заказы из таблицы orders.
 
-Используя foreign keys, свяжите записи из таблиц, согласно таблице:
+Используя `foreign keys`, свяжите записи из таблиц, согласно таблице:
 
 |ФИО|Заказ|
 |------------|----|
@@ -318,45 +319,45 @@ test_db=# EXPLAIN SELECT* FROM clients WHERE заказ IS NOT NULL;
    Filter: ("заказ" IS NOT NULL)
 (2 rows)
 ```
-Согласно документации, команда отображает план выполнения, созданный планировщиком PostgreSQL для указанного оператора. План выполнения показывает, как будет сканироваться таблица (таблицы), на которые ссылается инструкция, — простым последовательным сканированием, сканированием индекса и т. д. В моем конкретном случае в выводе присутствует следующая информация: *cost=0.00..18.10* - предполагаемые затраты времени на вывод первой строки...всех строк; *rows=806* - количество строк, которое будет выведено; *width=72* - предполагаемый средний размер строк. Ну и *Filter: ("заказ" IS NOT NULL)* - фильтр, по которому будет проводиться сравнение записей в таблицах.
+Согласно документации, команда отображает план выполнения, созданный планировщиком `PostgreSQL` для указанного оператора. План выполнения показывает, как будет сканироваться таблица (таблицы), на которые ссылается инструкция, — простым последовательным сканированием, сканированием индекса и т. д. В моем конкретном случае в выводе присутствует следующая информация: `cost=0.00..18.10` - предполагаемые затраты времени на вывод первой строки...всех строк; `rows=806` - количество строк, которое будет выведено; `width=72` - предполагаемый средний размер строк. Ну и `Filter: ("заказ" IS NOT NULL)` - фильтр, по которому будет проводиться сравнение записей в таблицах.
 
 ---
 
 ## Задача 6
 
-Создайте бэкап БД test_db и поместите его в volume, предназначенный для бэкапов (см. задачу 1).
+Создайте бэкап БД `test_db` и поместите его в `volume`, предназначенный для бэкапов (см. задачу 1).
 
-Остановите контейнер с PostgreSQL, но не удаляйте volumes.
+Остановите контейнер с `PostgreSQL`, но не удаляйте volumes.
 
-Поднимите новый пустой контейнер с PostgreSQL.
+Поднимите новый пустой контейнер с `PostgreSQL`.
 
-Восстановите БД test_db в новом контейнере.
+Восстановите БД `test_db` в новом контейнере.
 
 Приведите список операций, который вы применяли для бэкапа данных и восстановления. 
 
 ## Решение:
-*Создаю бэкап*
+Создаю бэкап
 ```bash
 pg_dumpall -U baldin > /home/backup/test_db.backup
 ```
-*Останавливаю контейнер (проверяю, что нет запущенных контейнеров)*
+Останавливаю контейнер (проверяю, что нет запущенных контейнеров)
 ```bash
 [admin@hw-06-02-docker ~]$ docker stop postgres
 postgres
 [admin@hw-06-02-docker ~]$ docker ps -a
 CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS                     PORTS     NAMES
 ```
-*Поднимаю новый контейнер с чистой БД*
+Поднимаю новый контейнер с чистой БД
 ```bash
 [admin@hw-06-02-docker ~]$ docker run --rm -d -e POSTGRES_USER=baldin -e POSTGRES_PASSWORD=qwerty -e POSTGRES_DB=test_db --name postgres2 postgres:12
 ```
-*Копирую дамп в новый контейнер*
+Копирую дамп в новый контейнер
 ```bash
 [admin@hw-06-02-docker ~]$ docker cp postgres:/home/backup/test_db.backup backup/ && docker cp backup/test_db.backup postgres2:/home/
 Successfully copied 8.7kB to /home/admin/backup/
 Successfully copied 8.7kB to postgres2:/home/
 ```
-*Восстанавливаю БД из файла*
+Восстанавливаю БД из файла
 ```bash
 root@690fb9fc0534:/# psql -U baldin -d test_db -f /home/test_db.backup
 SET
@@ -464,7 +465,7 @@ GRANT
 GRANT
 GRANT
 ```
-*В результате*
+В результате
 ```bash
 root@690fb9fc0534:/# psql -U gorbachev -d test_db
 psql (12.15 (Debian 12.15-1.pgdg110+1))
