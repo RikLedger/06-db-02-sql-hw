@@ -1,5 +1,7 @@
 # Домашнее задание к занятию 2. «SQL» - `Горбачёв Олег`
 
+## ВведениеПеред выполнением задания вы можете ознакомиться с [дополнительными материалами](https://github.com/netology-code/virt-homeworks/blob/virt-11/additional/README.md)
+
 ## Задача 1
 
 Используя Docker, поднимите инстанс PostgreSQL (версию 12) c 2 volume, 
